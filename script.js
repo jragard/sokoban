@@ -11,6 +11,7 @@ const map = [
 ];
 
 const mapArray = [];
+let isGameOver = false;
 
 for (let i = 0; i < map.length; i++) {
     mapArray.push([]);
@@ -82,29 +83,27 @@ window.onload = function () {
 function redrawBoard() {
     let board = document.getElementById("container");
     board.innerHTML = "";
-    checkWin();
     createMaze();
 }
 
 function checkWin() {
-    
+    if (isGameOver) return false;
+
     let wins = document.getElementsByClassName("boxDot");
     let destination = document.getElementById("win");
     let winText = document.createTextNode("You Win");
+
     if (wins.length == 7) {
+        isGameOver = true;
         destination.appendChild(winText);
-        document.removeEventListener("keydown");
-        
+        document.removeEventListener("keydown", onKeyEvent);    
     } 
 }
 
-
-document.addEventListener("keydown", (event) => {
-    checkWin();
+const onKeyEvent = (event) => {
+    
     const keyName = event.key;
 
-   
-    
     outerloop:
         for (let i = 0; i < mapArray.length; i++) {
             innerloop: 
@@ -368,5 +367,6 @@ document.addEventListener("keydown", (event) => {
             }
         }
         checkWin();
-})
+}
 
+document.addEventListener("keydown", onKeyEvent);
