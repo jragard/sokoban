@@ -76,10 +76,13 @@ h1 {
     top:  440px; */
 }
 
-#winMessage {
+#win {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size: 75px;
     font-weight: bold;
+    /* background-color: yellow; */
+    /* height: 100px;
+    width: 600px; */
     
 }
 

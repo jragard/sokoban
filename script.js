@@ -33,6 +33,14 @@ function createDiv(type) {
 let boxOnStorage = document.createElement("div");
 boxOnStorage.className = "box cell"
 
+// function checkWin() {
+//     let wins = document.getElementsByClassName("boxDot");
+//     let destination = document.createElement("div");
+//     let winText = document.createTextNode("You Win");
+//     if (wins.length === 7) {
+//         destination.appendChild(winText);
+//     }
+// }
 
 function createMaze() {
     for (let i = 0; i < mapArray.length; i++) {
@@ -74,14 +82,28 @@ window.onload = function () {
 function redrawBoard() {
     let board = document.getElementById("container");
     board.innerHTML = "";
+    checkWin();
     createMaze();
 }
 
-
+function checkWin() {
+    
+    let wins = document.getElementsByClassName("boxDot");
+    let destination = document.getElementById("win");
+    let winText = document.createTextNode("You Win");
+    if (wins.length == 7) {
+        destination.appendChild(winText);
+        document.removeEventListener("keydown");
+        
+    } 
+}
 
 
 document.addEventListener("keydown", (event) => {
+    checkWin();
     const keyName = event.key;
+
+   
     
     outerloop:
         for (let i = 0; i < mapArray.length; i++) {
@@ -286,33 +308,7 @@ document.addEventListener("keydown", (event) => {
                     break outerloop;    
                 } 
 
-                // if (mapArray[i][j] === "P" && mapArray[i][j + 1] === "B" && mapArray[i][j + 2] === "O") {
-                //     moveRight();
-                //     mapArray[i][j + 2] = "X";
-                //     mapArray[i][j] = "O";
-                //     redrawBoard();
-                //     break outerloop;
-                // } if (mapArray[i][j] === "P" && mapArray[i][j - 1] === "B" && mapArray[i][j - 2] != "O") {
-                //     moveLeft();
-                //     mapArray[i][j - 2] = "X";
-                //     mapArray[i][j] = "O"
-                //     redrawBoard();
-                //     break;
-                // } if (mapArray[i][j] === "P" && mapArray[i - 1][j] === "B" && mapArray[i - 2][j] != "O") {
-                //     moveUp();
-                //     mapArray[i - 2][j] = "X";
-                //     mapArray[i][j] = "O"
-                //     redrawBoard();
-                //     break outerloop;
-                // } if (mapArray[i][j] === "P" && mapArray[i + 1][j] === "B" && mapArray[i + 2][j] != "O") {
-                //     moveDown();
-                //     mapArray[i + 2][j] = "X";
-                //     mapArray[i][j] = "O"
-                //     redrawBoard();
-                //     break outerloop;    
-                // } 
-                
-                // next 4 'if statementes' allow player to move a box off of a storage space into an adjacent space
+        
 
                 if (mapArray[i][j] === "S" && mapArray[i][j + 1] === "X" && mapArray[i][j + 2] != "W" && mapArray[i][j + 2] != "B" && keyName === "ArrowRight") {
                     moveRight();
@@ -367,19 +363,10 @@ document.addEventListener("keydown", (event) => {
 
 
 
-
+                
                 
             }
         }
-    // document.getElementsByClassName("start")[0].style.top = startTop + "px";
-    // document.getElementsByClassName("start")[0].style.left = startLeft + "px";
+        checkWin();
 })
 
-// function printWin() {
-//     let destination = document.getElementById("winMessage");
-//     text = document.createTextNode("You Win!");
-//     startLeft += 0;
-//     document.getElementsByClassName("player")[0].style.left = startLeft + "px";
-//     destination.appendChild(text);
-
-// }
