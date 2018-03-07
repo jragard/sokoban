@@ -145,26 +145,26 @@ const onKeyEvent = (event) => {
 
 
 
-                function moveRight() {
-                    currentCell(" ");
-                    rightOne("S");
+                // function moveRight() {
+                //     currentCell(" ");
+                //     rightOne("S");
                     
-                }
+                // }
 
-                function moveLeft() {
-                    currentCell(" ");
-                    leftOne("S");
-                }
+                // function moveLeft() {
+                //     currentCell(" ");
+                //     leftOne("S");
+                // }
 
-                function moveUp() {
-                    currentCell(" ");
-                    mapArray[rowIndex - 1][cellIndex] = "S";
-                }
+                // function moveUp() {
+                //     currentCell(" ");
+                //     upOne("S");
+                // }
 
-                function moveDown() {
-                    currentCell(" ");
-                    mapArray[rowIndex + 1][cellIndex] = "S";
-                }
+                // function moveDown() {
+                //     currentCell(" ");
+                //     downOne("S");
+                // }
 
 
 
@@ -178,23 +178,27 @@ const onKeyEvent = (event) => {
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "S" && leftOne() === "B" && mapArray[rowIndex][cellIndex - 2] != "O" && mapArray[rowIndex][cellIndex - 2] != "B" && mapArray[rowIndex][cellIndex - 2] != "X" && mapArray[rowIndex][cellIndex - 2] != "W" && keyName === "ArrowLeft") {
+                if (currentCell() === "S" && leftOne() === "B" && leftTwo() != "O" && leftTwo() != "B" && leftTwo() != "X" && leftTwo() != "W" && keyName === "ArrowLeft") {
                     // moveLeft();
                     currentCell(" ");
                     leftOne("S");
-                    mapArray[rowIndex][cellIndex - 2] = "B";
+                    leftTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "S" && mapArray[rowIndex - 1][cellIndex] === "B" && mapArray[rowIndex - 2][cellIndex] != "O" && mapArray[rowIndex - 2][cellIndex] != "B" && mapArray[rowIndex - 2][cellIndex] != "X" && mapArray[rowIndex - 2][cellIndex] != "W" && keyName === "ArrowUp") {
-                    moveUp();
-                    mapArray[rowIndex - 2][cellIndex] = "B";
+                if (currentCell() === "S" && upOne() === "B" && upTwo() != "O" && upTwo() != "B" && upTwo() != "X" && upTwo() != "W" && keyName === "ArrowUp") {
+                    // moveUp();
+                    currentCell(" ");
+                    upOne("S");
+                    upTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "S" && mapArray[rowIndex + 1][cellIndex] === "B" && mapArray[rowIndex + 2][cellIndex] != "O" && mapArray[rowIndex + 2][cellIndex] != "B" && mapArray[rowIndex + 2][cellIndex] != "X" && mapArray[rowIndex + 2][cellIndex] != "W" && keyName === "ArrowDown") {
-                    moveDown();
-                    mapArray[rowIndex + 2][cellIndex] = "B";
+                if (currentCell() === "S" && downOne() === "B" && downTwo() != "O" && downTwo() != "B" && downTwo() != "X" && downTwo() != "W" && keyName === "ArrowDown") {
+                    // moveDown();
+                    currentCell(" ");
+                    downOne("S")
+                    downTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
@@ -217,13 +221,17 @@ const onKeyEvent = (event) => {
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "S" && mapArray[rowIndex - 1][cellIndex] === " " && keyName === "ArrowUp") {
-                    moveUp();
+                if (currentCell() === "S" && upOne() === " " && keyName === "ArrowUp") {
+                    // moveUp();
+                    currentCell(" ");
+                    upOne("S");
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "S" && mapArray[rowIndex + 1][cellIndex] === " " && keyName === "ArrowDown") {
-                    moveDown();
+                if (currentCell() === "S" && downOne() === " " && keyName === "ArrowDown") {
+                    // moveDown();
+                    currentCell(" ");
+                    downOne("S");
                     redrawBoard();
                     break outerloop;
                 }
@@ -246,15 +254,17 @@ const onKeyEvent = (event) => {
                     redrawBoard();
                     break;
                 }
-                if (currentCell() === "S" && mapArray[rowIndex - 1][cellIndex] === "O" && keyName === "ArrowUp") {
-                    moveUp();
-                    mapArray[rowIndex - 1][cellIndex] = "P";
+                if (currentCell() === "S" && upOne() === "O" && keyName === "ArrowUp") {
+                    // moveUp();
+                    currentCell(" ");
+                    upOne("P");
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "S" && mapArray[rowIndex + 1][cellIndex] === "O" && keyName === "ArrowDown") {
-                    moveDown();
-                    mapArray[rowIndex + 1][cellIndex] = "P";
+                if (currentCell() === "S" && downOne() === "O" && keyName === "ArrowDown") {
+                    // moveDown();
+                    currentCell(" ");
+                    downOne("P");
                     redrawBoard();
                     break outerloop;
                 }
@@ -276,17 +286,17 @@ const onKeyEvent = (event) => {
                     redrawBoard();
                     break;
                 }
-                if (currentCell() === "P" && mapArray[rowIndex - 1][cellIndex] === " " && keyName === "ArrowUp") {
-                    moveUp();
-                    mapArray[rowIndex - 1][cellIndex] = "S";
+                if (currentCell() === "P" && upOne() === " " && keyName === "ArrowUp") {
+                    // moveUp();
                     currentCell("O");
+                    upOne("S");
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "P" && mapArray[rowIndex + 1][cellIndex] === " " && keyName === "ArrowDown") {
-                    moveDown();
-                    mapArray[rowIndex + 1][cellIndex] = "S";
+                if (currentCell() === "P" && downOne() === " " && keyName === "ArrowDown") {
+                    // moveDown();
                     currentCell("O");
+                    downOne("S");
                     redrawBoard();
                     break outerloop;
                 }
@@ -302,25 +312,27 @@ const onKeyEvent = (event) => {
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "P" && leftOne() === "B" && mapArray[rowIndex][cellIndex - 2] != "O" && mapArray[rowIndex][cellIndex - 2] != "B" && mapArray[rowIndex][cellIndex - 2] != "W" && keyName === "ArrowLeft") {
+                if (currentCell() === "P" && leftOne() === "B" && leftTwo() != "O" && leftTwo() != "B" && leftTwo() != "W" && keyName === "ArrowLeft") {
                     // moveLeft();
                     currentCell("O");
                     leftOne("S")
-                    mapArray[rowIndex][cellIndex - 2] = "B";
+                    leftTwo("B");
                     redrawBoard();
                     break;
                 }
-                if (currentCell() === "P" && mapArray[rowIndex - 1][cellIndex] === "B" && mapArray[rowIndex - 2][cellIndex] != "O" && mapArray[rowIndex - 2][cellIndex] != "B" && mapArray[rowIndex - 2][cellIndex] != "W" && keyName === "ArrowUp") {
-                    moveUp();
-                    mapArray[rowIndex - 2][cellIndex] = "B";
+                if (currentCell() === "P" && upOne() === "B" && upTwo() != "O" && upTwo() != "B" && upTwo() != "W" && keyName === "ArrowUp") {
+                    // moveUp();
                     currentCell("O");
+                    upOne("S");
+                    upTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "P" && mapArray[rowIndex + 1][cellIndex] === "B" && mapArray[rowIndex + 2][cellIndex] != "O" && mapArray[rowIndex + 2][cellIndex] != "B" && mapArray[rowIndex + 2][cellIndex] != "W" && keyName === "ArrowDown") {
-                    moveDown();
-                    mapArray[rowIndex + 2][cellIndex] = "B";
+                if (currentCell() === "P" && downOne() === "B" && downTwo() != "O" && downTwo() != "B" && downTwo() != "W" && keyName === "ArrowDown") {
+                    // moveDown();
                     currentCell("O");
+                    downOne("S");
+                    downTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
@@ -335,25 +347,27 @@ const onKeyEvent = (event) => {
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "P" && leftOne() === "B" && mapArray[rowIndex][cellIndex - 2] != "X" && mapArray[rowIndex][cellIndex - 2] != "B" && mapArray[rowIndex][cellIndex - 2] != "W" && mapArray[rowIndex][cellIndex - 2] != " " && keyName === "ArrowLeft") {
+                if (currentCell() === "P" && leftOne() === "B" && leftTwo() != "X" && leftTwo() != "B" && leftTwo() != "W" && leftTwo() != " " && keyName === "ArrowLeft") {
                     // moveLeft();
                     currentCell("O");
                     leftOne("S");
-                    mapArray[rowIndex][cellIndex - 2] = "X";
+                    leftTwo("X");
                     redrawBoard();
                     break;
                 }
-                if (currentCell() === "P" && mapArray[rowIndex - 1][cellIndex] === "B" && mapArray[rowIndex - 2][cellIndex] != "X" && mapArray[rowIndex - 2][cellIndex] != "B" && mapArray[rowIndex - 2][cellIndex] != "W" && keyName === "ArrowUp") {
-                    moveUp();
-                    mapArray[rowIndex - 2][cellIndex] = "X";
+                if (currentCell() === "P" && upOne() === "B" && upTwo() != "X" && upTwo() != "B" && upTwo() != "W" && keyName === "ArrowUp") {
+                    // moveUp();
                     currentCell("O");
+                    upOne("S");
+                    upTwo("X");
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "P" && mapArray[rowIndex + 1][cellIndex] === "B" && mapArray[rowIndex + 2][cellIndex] != "X" && mapArray[rowIndex + 2][cellIndex] != "B" && mapArray[rowIndex + 2][cellIndex] != "W" && keyName === "ArrowDown") {
-                    moveDown();
-                    mapArray[rowIndex + 2][cellIndex] = "X";
+                if (currentCell() === "P" && downOne() === "B" && downTwo() != "X" && downTwo() != "B" && downTwo() != "W" && keyName === "ArrowDown") {
+                    // moveDown();
                     currentCell("O");
+                    downOne("S");
+                    downTwo("X");
                     redrawBoard();
                     break outerloop;
                 }
@@ -368,25 +382,27 @@ const onKeyEvent = (event) => {
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "S" && leftOne() === "X" && mapArray[rowIndex][cellIndex - 2] != "W" && mapArray[rowIndex][cellIndex - 2] != "B" && mapArray[rowIndex][cellIndex - 2] != "O" && keyName === "ArrowLeft") {
+                if (currentCell() === "S" && leftOne() === "X" && leftTwo() != "W" && leftTwo() != "B" && leftTwo() != "O" && keyName === "ArrowLeft") {
                     // moveLeft();
                     currentCell(" ");
                     leftOne("P");
-                    mapArray[rowIndex][cellIndex - 2] = "B";
+                    leftTwo("B");
                     redrawBoard();
                     break;
                 }
-                if (currentCell() === "S" && mapArray[rowIndex - 1][cellIndex] === "X" && mapArray[rowIndex - 2][cellIndex] != "W" && mapArray[rowIndex - 2][cellIndex] != "B" && keyName === "ArrowUp") {
-                    moveUp();
-                    mapArray[rowIndex - 2][cellIndex] = "B";
-                    mapArray[rowIndex - 1][cellIndex] = "P"
+                if (currentCell() === "S" && upOne() === "X" && upTwo() != "W" && upTwo() != "B" && keyName === "ArrowUp") {
+                    // moveUp();
+                    currentCell(" ");
+                    upOne("P");
+                    upTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "S" && mapArray[rowIndex + 1][cellIndex] === "X" && mapArray[rowIndex + 2][cellIndex] != "W" && mapArray[rowIndex + 2][cellIndex] != "B" && keyName === "ArrowDown") {
-                    moveDown();
-                    mapArray[rowIndex + 2][cellIndex] = "B";
-                    mapArray[rowIndex + 1][cellIndex] = "P"
+                if (currentCell() === "S" && downOne() === "X" && downTwo() != "W" && downTwo() != "B" && keyName === "ArrowDown") {
+                    // moveDown();
+                    currentCell(" ");
+                    downOne("P");
+                    downTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
@@ -401,23 +417,27 @@ const onKeyEvent = (event) => {
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "S" && leftOne() === "B" && mapArray[rowIndex][cellIndex - 2] === "O" && keyName === "ArrowLeft") {
+                if (currentCell() === "S" && leftOne() === "B" && leftTwo() === "O" && keyName === "ArrowLeft") {
                     // moveLeft();
                     currentCell(" ");
                     leftOne("S")
-                    mapArray[rowIndex][cellIndex - 2] = "X";
+                    leftTwo("X");
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "S" && mapArray[rowIndex - 1][cellIndex] === "B" && mapArray[rowIndex - 2][cellIndex] === "O" && keyName === "ArrowUp") {
-                    moveUp();
-                    mapArray[rowIndex - 2][cellIndex] = "X";
+                if (currentCell() === "S" && upOne() === "B" && upTwo() === "O" && keyName === "ArrowUp") {
+                    // moveUp();
+                    currentCell(" ");
+                    upOne("S")
+                    upTwo("X");
                     redrawBoard();
                     break outerloop;
                 }
-                if (currentCell() === "S" && mapArray[rowIndex + 1][cellIndex] === "B" && mapArray[rowIndex + 2][cellIndex] === "O" && keyName === "ArrowDown") {
-                    moveDown();
-                    mapArray[rowIndex + 2][cellIndex] = "X";
+                if (currentCell() === "S" && downOne() === "B" && downTwo() === "O" && keyName === "ArrowDown") {
+                    // moveDown();
+                    currentCell(" ");
+                    downOne("S");
+                    downTwo("X");
                     redrawBoard();
                     break outerloop;
                 }
