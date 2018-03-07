@@ -84,187 +84,195 @@ const onKeyEvent = (event) => {
 
     outerloop:
         for (let rowIndex = 0; rowIndex < mapArray.length; rowIndex++) {
-            innerloop: 
-                for (let cellIndex = 0; cellIndex < mapArray[rowIndex].length; cellIndex++) {
+            innerloop: for (let cellIndex = 0; cellIndex < mapArray[rowIndex].length; cellIndex++) {
 
                 let currentCell = (newValue) => {
                     if (newValue) mapArray[rowIndex][cellIndex] = newValue;
-
-                    return mapArray[rowIndex][cellIndex];
+return mapArray[rowIndex][cellIndex];
                 };
 
                 let rightOne = (newValue) => {
                     if (newValue) mapArray[rowIndex][cellIndex + 1] = newValue;
-
-                    return mapArray[rowIndex][cellIndex + 1];
+return mapArray[rowIndex][cellIndex + 1];
                 }
 
                 let rightTwo = (newValue) => {
                     if (newValue) mapArray[rowIndex][cellIndex + 2] = newValue;
-
-                    return mapArray[rowIndex][cellIndex + 2];
+return mapArray[rowIndex][cellIndex + 2];
                 }
 
                 let leftOne = (newValue) => {
                     if (newValue) mapArray[rowIndex][cellIndex - 1] = newValue;
-
-                    return mapArray[rowIndex][cellIndex - 1];
+return mapArray[rowIndex][cellIndex - 1];
                 }
 
                 let leftTwo = (newValue) => {
                     if (newValue) mapArray[rowIndex][cellIndex - 2] = newValue;
-
-                    return mapArray[rowIndex][cellIndex - 2];
+return mapArray[rowIndex][cellIndex - 2];
                 }
 
                 let upOne = (newValue) => {
                     if (newValue) mapArray[rowIndex - 1][cellIndex] = newValue;
-
-                    return mapArray[rowIndex - 1][cellIndex];
+return mapArray[rowIndex - 1][cellIndex];
                 }
 
                 let upTwo = (newValue) => {
                     if (newValue) mapArray[rowIndex - 2][cellIndex] = newValue;
-
-                    return mapArray[rowIndex - 2][cellIndex];
+return mapArray[rowIndex - 2][cellIndex];
                 }
 
                 let downOne = (newValue) => {
                     if (newValue) mapArray[rowIndex + 1][cellIndex] = newValue;
-
-                    return mapArray[rowIndex + 1][cellIndex];
+return mapArray[rowIndex + 1][cellIndex];
                 }
 
                 let downTwo = (newValue) => {
                     if (newValue) mapArray[rowIndex + 2][cellIndex] = newValue;
-
-                    return mapArray[rowIndex + 2][cellIndex];
+return mapArray[rowIndex + 2][cellIndex];
                 }
 
-    
 
+                function moveRightOne() {
+                    currentCell(" ");
+                    rightOne("S");
+                }
 
+                function rightOneToP() {
+                    currentCell(" ");
+                    rightOne("P");
+                }
 
-                // function moveRight() {
-                //     currentCell(" ");
-                //     rightOne("S");
-                    
-                // }
+                function rightOneFromO() {
+                    currentCell("O");
+                    rightOne("S");
+                }
 
-                // function moveLeft() {
-                //     currentCell(" ");
-                //     leftOne("S");
-                // }
+                function moveLeftOne() {
+                    currentCell(" ");
+                    leftOne("S");
+                }
 
-                // function moveUp() {
-                //     currentCell(" ");
-                //     upOne("S");
-                // }
+                function leftOneToP() {
+                    currentCell(" ");
+                    leftOne("P");
+                }
 
-                // function moveDown() {
-                //     currentCell(" ");
-                //     downOne("S");
-                // }
+                function leftOneFromO() {
+                    currentCell("O");
+                    leftOne("S");
+                }
 
+                function moveUpOne() {
+                    currentCell(" ");
+                    upOne("S");
+                }
 
+                function upOneToP() {
+                    currentCell(" ");
+                    upOne("P");
+                }
+
+                function upOneFromO() {
+                    currentCell("O");
+                    upOne("S");
+                }
+
+                function moveDownOne() {
+                    currentCell(" ");
+                    downOne("S");
+                }
+
+                function downOneToP() {
+                    currentCell(" ");
+                    downOne("P");
+                }
+
+                function downOneFromO() {
+                    currentCell("O");
+                    downOne("S");
+                }
 
                 // First 4 'if statements' move the player right/left/up/down on the condition that there is a box to move in the next cell, and that there is no storage space 2 cells over
 
                 if (currentCell() === "S" && rightOne() === "B" && rightTwo() === " " && keyName === "ArrowRight") {
-                    // moveRight();
-                    currentCell(" ");
-                    rightOne("S");
+                    moveRightOne();
+
                     rightTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "S" && leftOne() === "B" && leftTwo() === " " && keyName === "ArrowLeft") {
-                    // moveLeft();
-                    currentCell(" ");
-                    leftOne("S");
+                    moveLeftOne();
+
                     leftTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "S" && upOne() === "B" && upTwo() === " " && keyName === "ArrowUp") {
-                    // moveUp();
-                    currentCell(" ");
-                    upOne("S");
+                    moveUpOne();
+
                     upTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "S" && downOne() === "B" && downTwo() === " " && keyName === "ArrowDown") {
-                    // moveDown();
-                    currentCell(" ");
-                    downOne("S")
+                    moveDownOne();
+
                     downTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
 
-
-
                 // next 4 'if statements' move the player right/left/up/down on the condition there is an empty space for them to move to
 
                 if (currentCell() === "S" && rightOne() === " " && keyName === "ArrowRight") {
-                    // moveRight();
-                    currentCell(" ");
-                    rightOne("S");
+                    moveRightOne();
+
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "S" && leftOne() === " " && keyName === "ArrowLeft") {
-                    // moveLeft();
-                    currentCell(" ");
-                    leftOne("S");
+                    moveLeftOne();
+
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "S" && upOne() === " " && keyName === "ArrowUp") {
-                    // moveUp();
-                    currentCell(" ");
-                    upOne("S");
+                    moveUpOne();
+
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "S" && downOne() === " " && keyName === "ArrowDown") {
-                    // moveDown();
-                    currentCell(" ");
-                    downOne("S");
+                    moveDownOne();
+                   
                     redrawBoard();
                     break outerloop;
                 }
 
-
                 // next 4 if statements allow a player to move into a storage space 
 
-
                 if (currentCell() === "S" && rightOne() === "O" && keyName === "ArrowRight") {
-                    // moveRight();
-                    currentCell(" ");
-                    rightOne("P");
+                    rightOneToP(); 
+
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "S" && leftOne() === "O" && keyName === "ArrowLeft") {
-                    // moveLeft();
-                    currentCell(" ");
-                    leftOne("P");
+                    leftOneToP();
+
                     redrawBoard();
-                    break;
+                    break outerloop;
                 }
                 if (currentCell() === "S" && upOne() === "O" && keyName === "ArrowUp") {
-                    // moveUp();
-                    currentCell(" ");
-                    upOne("P");
+                    upOneToP();
+                    
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "S" && downOne() === "O" && keyName === "ArrowDown") {
-                    // moveDown();
-                    currentCell(" ");
-                    downOne("P");
+                    downOneToP();
+                    
                     redrawBoard();
                     break outerloop;
                 }
@@ -272,66 +280,56 @@ const onKeyEvent = (event) => {
                 // next 4 'if statements' move the player off the storage space onto an adjacent space
 
                 if (currentCell() === "P" && rightOne() === " " && keyName === "ArrowRight") {
-                    // moveRight();
-                    currentCell(" ");
-                    rightOne("S");
-                    currentCell("O");
+                    rightOneFromO();
+
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "P" && leftOne() === " " && keyName === "ArrowLeft") {
-                    // moveLeft();
-                    currentCell("O");
-                    leftOne("S");
+                    leftOneFromO();
+
                     redrawBoard();
-                    break;
+                    break outerloop;
                 }
                 if (currentCell() === "P" && upOne() === " " && keyName === "ArrowUp") {
-                    // moveUp();
-                    currentCell("O");
-                    upOne("S");
+                    upOneFromO();
+                    
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "P" && downOne() === " " && keyName === "ArrowDown") {
-                    // moveDown();
-                    currentCell("O");
-                    downOne("S");
+                    downOneFromO();
+                   
                     redrawBoard();
                     break outerloop;
                 }
 
-
                 // next 4 'if statements' move the player from a storage space (P) into a box (B)
 
                 if (currentCell() === "P" && rightOne() === "B" && rightTwo() === " " && keyName === "ArrowRight") {
-                    // moveRight();
-                    currentCell("O");
-                    rightOne("S");
+                    rightOneFromO();
+
                     rightTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "P" && leftOne() === "B" && leftTwo() === " " && keyName === "ArrowLeft") {
-                    // moveLeft();
-                    currentCell("O");
-                    leftOne("S")
+                    leftOneFromO();
+
                     leftTwo("B");
                     redrawBoard();
-                    break;
+                    break outerloop;
                 }
                 if (currentCell() === "P" && upOne() === "B" && upTwo() === " " && keyName === "ArrowUp") {
-                    // moveUp();
-                    currentCell("O");
-                    upOne("S");
+                    upOneFromO();
+                    
                     upTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "P" && downOne() === "B" && downTwo() === " " && keyName === "ArrowDown") {
-                    // moveDown();
-                    currentCell("O");
-                    downOne("S");
+                    downOneFromO();
+                    
                     downTwo("B");
                     redrawBoard();
                     break outerloop;
@@ -340,33 +338,29 @@ const onKeyEvent = (event) => {
                 // this line may be completely redundant
 
                 if (currentCell() === "P" && rightOne() === "B" && rightTwo() === "O" && keyName === "ArrowRight") {
-                    // moveRight();
-                    currentCell("O");
-                    rightOne("S");
+                    rightOneFromO();
+
                     rightTwo("X");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "P" && leftOne() === "B" && leftTwo() === "O" && keyName === "ArrowLeft") {
-                    // moveLeft();
-                    currentCell("O");
-                    leftOne("S");
+                    leftOneFromO();
+
                     leftTwo("X");
                     redrawBoard();
-                    break;
+                    break outerloop;
                 }
                 if (currentCell() === "P" && upOne() === "B" && upTwo() === "O" && keyName === "ArrowUp") {
-                    // moveUp();
-                    currentCell("O");
-                    upOne("S");
+                    upOneFromO();
+                    
                     upTwo("X");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "P" && downOne() === "B" && downTwo() === "O" && keyName === "ArrowDown") {
-                    // moveDown();
-                    currentCell("O");
-                    downOne("S");
+                    downOneFromO();
+                    
                     downTwo("X");
                     redrawBoard();
                     break outerloop;
@@ -375,33 +369,29 @@ const onKeyEvent = (event) => {
 
 
                 if (currentCell() === "S" && rightOne() === "X" && rightTwo() === " " && keyName === "ArrowRight") {
-                    // moveRight();
-                    currentCell(" ");
-                    rightOne("P");
+                    rightOneToP();
+
                     rightTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "S" && leftOne() === "X" && leftTwo() === " " && keyName === "ArrowLeft") {
-                    // moveLeft();
-                    currentCell(" ");
-                    leftOne("P");
+                    leftOneToP();
+
                     leftTwo("B");
                     redrawBoard();
-                    break;
+                    break outerloop;
                 }
                 if (currentCell() === "S" && upOne() === "X" && upTwo() === " " && keyName === "ArrowUp") {
-                    // moveUp();
-                    currentCell(" ");
-                    upOne("P");
+                    upOneToP();
+                    
                     upTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "S" && downOne() === "X" && downTwo() === " " && keyName === "ArrowDown") {
-                    // moveDown();
-                    currentCell(" ");
-                    downOne("P");
+                    downOneToP();
+                    
                     downTwo("B");
                     redrawBoard();
                     break outerloop;
@@ -410,42 +400,33 @@ const onKeyEvent = (event) => {
                 // next 4 'if statements' move the player and adjacent box onto a storage space, and change the storage space into a boxDot div (box occupying a storage space)
 
                 if (currentCell() === "S" && rightOne() === "B" && rightTwo() === "O" && keyName === "ArrowRight") {
-                    // moveRight();
-                    currentCell(" ");
-                    rightOne("S");
+                    moveRightOne();
+
                     rightTwo("X");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "S" && leftOne() === "B" && leftTwo() === "O" && keyName === "ArrowLeft") {
-                    // moveLeft();
-                    currentCell(" ");
-                    leftOne("S")
+                    moveLeftOne();
+
                     leftTwo("X");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "S" && upOne() === "B" && upTwo() === "O" && keyName === "ArrowUp") {
-                    // moveUp();
-                    currentCell(" ");
-                    upOne("S")
+                    moveUpOne();
+                    
                     upTwo("X");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "S" && downOne() === "B" && downTwo() === "O" && keyName === "ArrowDown") {
-                    // moveDown();
-                    currentCell(" ");
-                    downOne("S");
+                    moveDownOne();
+                    
                     downTwo("X");
                     redrawBoard();
                     break outerloop;
                 }
-
-
-
-
-
             }
         }
     checkWin();
