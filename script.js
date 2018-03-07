@@ -69,7 +69,7 @@ function checkWin() {
 
     let wins = document.getElementsByClassName("boxDot");
     let destination = document.getElementById("win");
-    let winText = document.createTextNode("SAKI BOMBS!");
+    let winText = document.createTextNode("You have solved my puzzle. Nice job, NERD ¯ \\ _(ツ)_/¯ ");
 
     if (wins.length == 7) {
         isGameOver = true;
@@ -90,6 +90,13 @@ const onKeyEvent = (event) => {
                     if (newValue) mapArray[rowIndex][cellIndex] = newValue;
                     return mapArray[rowIndex][cellIndex];
                 };
+
+                // function currentCell(newValue) {
+                //     if (newValue) {
+                //         mapArray[rowIndex][cellIndex] = newValue;
+                //         return mapArray[rowIndex][cellIndex];
+                //     }
+                // }
 
                 let rightOne = (newValue) => {
                     if (newValue) mapArray[rowIndex][cellIndex + 1] = newValue;
