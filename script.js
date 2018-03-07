@@ -24,25 +24,6 @@ function createDiv(type) {
     document.getElementById("container").appendChild(divEl);
 }
 
-// function createPlayer() {
-//     playerDiv = document.createElement("div");
-//     playerDiv.className = "player";
-//     startCell = document.getElementsByClassName("start");
-//     startCell[0].appendChild(playerDiv);
-// }
-
-let boxOnStorage = document.createElement("div");
-boxOnStorage.className = "box cell"
-
-// function checkWin() {
-//     let wins = document.getElementsByClassName("boxDot");
-//     let destination = document.createElement("div");
-//     let winText = document.createTextNode("You Win");
-//     if (wins.length === 7) {
-//         destination.appendChild(winText);
-//     }
-// }
-
 function createMaze() {
     for (let i = 0; i < mapArray.length; i++) {
         for (let j = 0; j < mapArray[0].length; j++) {
@@ -74,11 +55,8 @@ function createMaze() {
 
 window.onload = function () {
     createMaze();
-    
-}
 
-// let startTop = 0;
-// let startLeft = 0;
+}
 
 function redrawBoard() {
     let board = document.getElementById("container");
@@ -96,277 +74,351 @@ function checkWin() {
     if (wins.length == 7) {
         isGameOver = true;
         destination.appendChild(winText);
-        document.removeEventListener("keydown", onKeyEvent);    
-    } 
+        document.removeEventListener("keydown", onKeyEvent);
+    }
 }
 
 const onKeyEvent = (event) => {
-    
+
     const keyName = event.key;
 
     outerloop:
-        for (let i = 0; i < mapArray.length; i++) {
+        for (let rowIndex = 0; rowIndex < mapArray.length; rowIndex++) {
             innerloop: 
-                for (let j = 0; j < mapArray[i].length; j++) {
+                for (let cellIndex = 0; cellIndex < mapArray[rowIndex].length; cellIndex++) {
 
-                // var currentCell = mapArray[i][j];
+                let currentCell = (newValue) => {
+                    if (newValue) mapArray[rowIndex][cellIndex] = newValue;
 
-                // var rightOne = mapArray[i][j + 1];
-                // var rightTwo = mapArray[i][j + 2];
+                    return mapArray[rowIndex][cellIndex];
+                };
 
-                // var leftOne = mapArray[i][j - 1];
-                // var leftTwo = mapArray[i][j - 2];
+                let rightOne = (newValue) => {
+                    if (newValue) mapArray[rowIndex][cellIndex + 1] = newValue;
 
-                // var upOne = mapArray[i - 1][j];
-                // var upTwo = mapArray[i - 2][j];
+                    return mapArray[rowIndex][cellIndex + 1];
+                }
 
-                // var downOne = mapArray[i + 1][j];
-                // var downTwo = mapArray[i + 2][j];
+                let rightTwo = (newValue) => {
+                    if (newValue) mapArray[rowIndex][cellIndex + 2] = newValue;
+
+                    return mapArray[rowIndex][cellIndex + 2];
+                }
+
+                let leftOne = (newValue) => {
+                    if (newValue) mapArray[rowIndex][cellIndex - 1] = newValue;
+
+                    return mapArray[rowIndex][cellIndex - 1] = newValue;
+                }
+
+                let leftTwo = (newValue) => {
+                    if (newValue) mapArray[rowIndex][cellIndex - 2] = newValue;
+
+                    return mapArray[rowIndex][cellIndex - 2] = newValue;
+                }
+
+                let upOne = (newValue) => {
+                    if (newValue) mapArray[rowIndex - 1][cellIndex] = newValue;
+
+                    return mapArray[rowIndex - 1][cellIndex] = newValue;
+                }
+
+                let upTwo = (newValue) => {
+                    if (newValue) mapArray[rowIndex - 2][cellIndex] = newValue;
+
+                    return mapArray[rowIndex - 2][cellIndex] = newValue;
+                }
+
+                let downOne = (newValue) => {
+                    if (newValue) mapArray[rowIndex + 1][cellIndex] = newValue;
+
+                    return mapArray[rowIndex + 1][cellIndex] = newValue;
+                }
+
+                let downTwo = (newValue) => {
+                    if (newValue) mapArray[rowIndex + 2][cellIndex] = newValue;
+
+                    return mapArray[rowIndex + 2][cellIndex] = newValue;
+                }
+
+    
+
+
 
                 function moveRight() {
-                    mapArray[i][j] = " ";
-                    mapArray[i][j + 1] = "S";
+                    currentCell(" ");
+                    rightOne("S");
+                    
                 }
 
                 function moveLeft() {
-                    mapArray[i][j] = " ";
-                    mapArray[i][j - 1] = "S";
+                    currentCell(" ");
+                    mapArray[rowIndex][cellIndex - 1] = "S";
                 }
 
                 function moveUp() {
-                    mapArray[i][j] = " ";
-                    mapArray[i - 1][j] = "S";
+                    currentCell(" ");
+                    mapArray[rowIndex - 1][cellIndex] = "S";
                 }
 
                 function moveDown() {
-                    mapArray[i][j] = " ";
-                    mapArray[i + 1][j] = "S";
+                    currentCell(" ");
+                    mapArray[rowIndex + 1][cellIndex] = "S";
                 }
-                
-                
+
+
 
                 // First 4 'if statements' move the player right/left/up/down on the condition that there is a box to move in the next cell, and that there is no storage space 2 cells over
 
-                if (mapArray[i][j] === "S" && mapArray[i][j + 1] === "B" && mapArray[i][j + 2] != "O" && mapArray[i][j + 2] != "B" && mapArray[i][j + 2] != "X" && mapArray[i][j + 2] != "W" && keyName === "ArrowRight") {
-                    moveRight();
-                    mapArray[i][j + 2] = "B";
+                if (currentCell() === "S" && rightOne() === "B" && rightTwo() != "O" && rightTwo() != "B" && rightTwo() != "X" && rightTwo() != "W" && keyName === "ArrowRight") {
+                    // moveRight();
+                    currentCell(" ");
+                    rightOne("S");
+                    rightTwo("B");
                     redrawBoard();
                     break outerloop;
                 }
-                if (mapArray[i][j] === "S" && mapArray[i][j - 1] === "B" && mapArray[i][j - 2] != "O" && mapArray[i][j - 2] != "B" && mapArray[i][j - 2] != "X" && mapArray[i][j - 2] != "W" && keyName === "ArrowLeft") {
+                if (currentCell() === "S" && mapArray[rowIndex][cellIndex - 1] === "B" && mapArray[rowIndex][cellIndex - 2] != "O" && mapArray[rowIndex][cellIndex - 2] != "B" && mapArray[rowIndex][cellIndex - 2] != "X" && mapArray[rowIndex][cellIndex - 2] != "W" && keyName === "ArrowLeft") {
                     moveLeft();
-                    mapArray[i][j - 2] = "B";
+                    mapArray[rowIndex][cellIndex - 2] = "B";
                     redrawBoard();
                     break outerloop;
                 }
-                if (mapArray[i][j] === "S" && mapArray[i - 1][j] === "B" && mapArray[i - 2][j] != "O" && mapArray[i - 2][j] != "B" && mapArray[i - 2][j] != "X" && mapArray[i - 2][j] != "W" && keyName === "ArrowUp") {
+                if (currentCell() === "S" && mapArray[rowIndex - 1][cellIndex] === "B" && mapArray[rowIndex - 2][cellIndex] != "O" && mapArray[rowIndex - 2][cellIndex] != "B" && mapArray[rowIndex - 2][cellIndex] != "X" && mapArray[rowIndex - 2][cellIndex] != "W" && keyName === "ArrowUp") {
                     moveUp();
-                    mapArray[i - 2][j] = "B";
+                    mapArray[rowIndex - 2][cellIndex] = "B";
                     redrawBoard();
                     break outerloop;
                 }
-                if (mapArray[i][j] === "S" && mapArray[i + 1][j] === "B" && mapArray[i + 2][j] != "O" && mapArray[i + 2][j] != "B" && mapArray[i + 2][j] != "X" && mapArray[i + 2][j] != "W" && keyName === "ArrowDown") {
+                if (currentCell() === "S" && mapArray[rowIndex + 1][cellIndex] === "B" && mapArray[rowIndex + 2][cellIndex] != "O" && mapArray[rowIndex + 2][cellIndex] != "B" && mapArray[rowIndex + 2][cellIndex] != "X" && mapArray[rowIndex + 2][cellIndex] != "W" && keyName === "ArrowDown") {
                     moveDown();
-                    mapArray[i + 2][j] = "B";
+                    mapArray[rowIndex + 2][cellIndex] = "B";
                     redrawBoard();
                     break outerloop;
                 }
-                
-                
-                
+
+
+
                 // next 4 'if statements' move the player right/left/up/down on the condition there is an empty space for them to move to
-                
-                if (mapArray[i][j] === "S" && mapArray[i][j + 1] === " " && keyName === "ArrowRight") {
-                    moveRight();
+
+                if (currentCell() === "S" && rightOne() === " " && keyName === "ArrowRight") {
+                    // moveRight();
+                    currentCell(" ");
+                    rightOne("S");
                     redrawBoard();
                     break outerloop;
-                } if (mapArray[i][j] === "S" && mapArray[i][j - 1] === " " && keyName === "ArrowLeft") {
+                }
+                if (currentCell() === "S" && mapArray[rowIndex][cellIndex - 1] === " " && keyName === "ArrowLeft") {
                     moveLeft();
                     redrawBoard();
                     break;
-                } if (mapArray[i][j] === "S" && mapArray[i - 1][j] === " " && keyName === "ArrowUp") {
+                }
+                if (currentCell() === "S" && mapArray[rowIndex - 1][cellIndex] === " " && keyName === "ArrowUp") {
                     moveUp();
                     redrawBoard();
                     break outerloop;
-                } if (mapArray[i][j] === "S" && mapArray[i + 1][j] === " " && keyName === "ArrowDown") {
+                }
+                if (currentCell() === "S" && mapArray[rowIndex + 1][cellIndex] === " " && keyName === "ArrowDown") {
                     moveDown();
                     redrawBoard();
                     break outerloop;
-                } 
-                
-                
+                }
+
+
                 // next 4 if statements allow a player to move into a storage space 
-                
-                
-                if (mapArray[i][j] === "S" && mapArray[i][j + 1] === "O" && keyName === "ArrowRight") {
-                    moveRight();
-                    mapArray[i][j + 1] = "P";
+
+
+                if (currentCell() === "S" && rightOne() === "O" && keyName === "ArrowRight") {
+                    // moveRight();
+                    currentCell(" ");
+                    rightOne("P");
                     redrawBoard();
                     break outerloop;
-                } if (mapArray[i][j] === "S" && mapArray[i][j - 1] === "O" && keyName === "ArrowLeft") {
+                }
+                if (currentCell() === "S" && mapArray[rowIndex][cellIndex - 1] === "O" && keyName === "ArrowLeft") {
                     moveLeft();
-                    mapArray[i][j - 1] = "P";
+                    mapArray[rowIndex][cellIndex - 1] = "P";
                     redrawBoard();
                     break;
-                } if (mapArray[i][j] === "S" && mapArray[i - 1][j] === "O" && keyName === "ArrowUp") {
+                }
+                if (currentCell() === "S" && mapArray[rowIndex - 1][cellIndex] === "O" && keyName === "ArrowUp") {
                     moveUp();
-                    mapArray[i - 1][j] = "P";
+                    mapArray[rowIndex - 1][cellIndex] = "P";
                     redrawBoard();
                     break outerloop;
-                } if (mapArray[i][j] === "S" && mapArray[i + 1][j] === "O" && keyName === "ArrowDown") {
+                }
+                if (currentCell() === "S" && mapArray[rowIndex + 1][cellIndex] === "O" && keyName === "ArrowDown") {
                     moveDown();
-                    mapArray[i + 1][j] = "P";
+                    mapArray[rowIndex + 1][cellIndex] = "P";
                     redrawBoard();
-                    break outerloop;    
-                } 
+                    break outerloop;
+                }
 
                 // next 4 'if statements' move the player off the storage space onto an adjacent space
 
-                if (mapArray[i][j] === "P" && mapArray[i][j + 1] === " " && keyName === "ArrowRight") {
-                    moveRight();
-                    mapArray[i][j + 1] = "S";
-                    mapArray[i][j] = "O"
+                if (currentCell() === "P" && rightOne() === " " && keyName === "ArrowRight") {
+                    // moveRight();
+                    currentCell(" ");
+                    rightOne("S");
+                    currentCell("O");
                     redrawBoard();
                     break outerloop;
-                } if (mapArray[i][j] === "P" && mapArray[i][j - 1] === " " && keyName === "ArrowLeft") {
+                }
+                if (currentCell() === "P" && mapArray[rowIndex][cellIndex - 1] === " " && keyName === "ArrowLeft") {
                     moveLeft();
-                    mapArray[i][j - 1] = "S";
-                    mapArray[i][j] = "O"
+                    mapArray[rowIndex][cellIndex - 1] = "S";
+                    currentCell("O");
                     redrawBoard();
                     break;
-                } if (mapArray[i][j] === "P" && mapArray[i - 1][j] === " " && keyName === "ArrowUp") {
+                }
+                if (currentCell() === "P" && mapArray[rowIndex - 1][cellIndex] === " " && keyName === "ArrowUp") {
                     moveUp();
-                    mapArray[i - 1][j] = "S";
-                    mapArray[i][j] = "O"
+                    mapArray[rowIndex - 1][cellIndex] = "S";
+                    currentCell("O");
                     redrawBoard();
                     break outerloop;
-                } if (mapArray[i][j] === "P" && mapArray[i + 1][j] === " " && keyName === "ArrowDown") {
+                }
+                if (currentCell() === "P" && mapArray[rowIndex + 1][cellIndex] === " " && keyName === "ArrowDown") {
                     moveDown();
-                    mapArray[i + 1][j] = "S";
-                    mapArray[i][j] = "O"
+                    mapArray[rowIndex + 1][cellIndex] = "S";
+                    currentCell("O");
                     redrawBoard();
-                    break outerloop;    
-                } 
+                    break outerloop;
+                }
 
 
                 // next 4 'if statements' move the player from a storage space (P) into a box (B)
 
-                if (mapArray[i][j] === "P" && mapArray[i][j + 1] === "B" && mapArray[i][j + 2] != "O" && mapArray[i][j + 2] != "B" && mapArray[i][j + 2] != "W" && keyName === "ArrowRight") {
-                    moveRight();
-                    // mapArray[i][j + 1] = "S";
-                    mapArray[i][j + 2] = "B"
-                    mapArray[i][j] = "O"
+                if (currentCell() === "P" && rightOne() === "B" && rightTwo() != "O" && rightTwo() != "B" && rightTwo() != "W" && rightTwo() != "X" && keyName === "ArrowRight") {
+                    // moveRight();
+                    currentCell("O");
+                    rightOne("S");
+                    rightTwo("B");
                     redrawBoard();
                     break outerloop;
-                } if (mapArray[i][j] === "P" && mapArray[i][j - 1] === "B" && mapArray[i][j - 2] != "O" && mapArray[i][j - 2] != "B" && mapArray[i][j - 2] != "W" && keyName === "ArrowLeft") {
+                }
+                if (currentCell() === "P" && mapArray[rowIndex][cellIndex - 1] === "B" && mapArray[rowIndex][cellIndex - 2] != "O" && mapArray[rowIndex][cellIndex - 2] != "B" && mapArray[rowIndex][cellIndex - 2] != "W" && keyName === "ArrowLeft") {
                     moveLeft();
-                    mapArray[i][j - 2] = "B";
-                    mapArray[i][j] = "O"
+                    mapArray[rowIndex][cellIndex - 2] = "B";
+                    currentCell("O");
                     redrawBoard();
                     break;
-                } if (mapArray[i][j] === "P" && mapArray[i - 1][j] === "B" && mapArray[i - 2][j] != "O" && mapArray[i - 2][j] != "B" && mapArray[i - 2][j] != "W" && keyName === "ArrowUp") {
+                }
+                if (currentCell() === "P" && mapArray[rowIndex - 1][cellIndex] === "B" && mapArray[rowIndex - 2][cellIndex] != "O" && mapArray[rowIndex - 2][cellIndex] != "B" && mapArray[rowIndex - 2][cellIndex] != "W" && keyName === "ArrowUp") {
                     moveUp();
-                    mapArray[i - 2][j] = "B";
-                    mapArray[i][j] = "O"
+                    mapArray[rowIndex - 2][cellIndex] = "B";
+                    currentCell("O");
                     redrawBoard();
                     break outerloop;
-                } if (mapArray[i][j] === "P" && mapArray[i + 1][j] === "B" && mapArray[i + 2][j] != "O" && mapArray[i + 2][j] != "B" && mapArray[i + 2][j] != "W" && keyName === "ArrowDown") {
+                }
+                if (currentCell() === "P" && mapArray[rowIndex + 1][cellIndex] === "B" && mapArray[rowIndex + 2][cellIndex] != "O" && mapArray[rowIndex + 2][cellIndex] != "B" && mapArray[rowIndex + 2][cellIndex] != "W" && keyName === "ArrowDown") {
                     moveDown();
-                    mapArray[i + 2][j] = "B";
-                    mapArray[i][j] = "O"
-                    redrawBoard();
-                    break outerloop;    
-                } 
-
-
-
-                if (mapArray[i][j] === "P" && mapArray[i][j + 1] === "B" && mapArray[i][j + 2] != "X" && mapArray[i][j + 2] != "B" && mapArray[i][j + 2] != "W" && keyName === "ArrowRight") {
-                    moveRight();
-                    // mapArray[i][j + 1] = "S";
-                    mapArray[i][j + 2] = "X"
-                    mapArray[i][j] = "O"
+                    mapArray[rowIndex + 2][cellIndex] = "B";
+                    currentCell("O");
                     redrawBoard();
                     break outerloop;
-                } if (mapArray[i][j] === "P" && mapArray[i][j - 1] === "B" && mapArray[i][j - 2] != "X" && mapArray[i][j - 2] != "B" && mapArray[i][j - 2] != "W" && keyName === "ArrowLeft") {
+                }
+
+                // this line may be completely redundant
+
+                if (currentCell() === "P" && rightOne() === "B" && rightTwo() != "X" && rightTwo() != "B" && rightTwo() != "W" && keyName === "ArrowRight") {
+                    // moveRight();
+                    currentCell("O");
+                    rightOne("S");
+                    rightTwo("X");
+                    redrawBoard();
+                    break outerloop;
+                }
+                if (currentCell() === "P" && mapArray[rowIndex][cellIndex - 1] === "B" && mapArray[rowIndex][cellIndex - 2] != "X" && mapArray[rowIndex][cellIndex - 2] != "B" && mapArray[rowIndex][cellIndex - 2] != "W" && keyName === "ArrowLeft") {
                     moveLeft();
-                    mapArray[i][j - 2] = "X";
-                    mapArray[i][j] = "O"
+                    mapArray[rowIndex][cellIndex - 2] = "X";
+                    currentCell("O");
                     redrawBoard();
                     break;
-                } if (mapArray[i][j] === "P" && mapArray[i - 1][j] === "B" && mapArray[i - 2][j] != "X" && mapArray[i - 2][j] != "B" && mapArray[i - 2][j] != "W" && keyName === "ArrowUp") {
+                }
+                if (currentCell() === "P" && mapArray[rowIndex - 1][cellIndex] === "B" && mapArray[rowIndex - 2][cellIndex] != "X" && mapArray[rowIndex - 2][cellIndex] != "B" && mapArray[rowIndex - 2][cellIndex] != "W" && keyName === "ArrowUp") {
                     moveUp();
-                    mapArray[i - 2][j] = "X";
-                    mapArray[i][j] = "O"
+                    mapArray[rowIndex - 2][cellIndex] = "X";
+                    currentCell("O");
                     redrawBoard();
                     break outerloop;
-                } if (mapArray[i][j] === "P" && mapArray[i + 1][j] === "B" && mapArray[i + 2][j] != "X" && mapArray[i + 2][j] != "B" && mapArray[i + 2][j] != "W" && keyName === "ArrowDown") {
+                }
+                if (currentCell() === "P" && mapArray[rowIndex + 1][cellIndex] === "B" && mapArray[rowIndex + 2][cellIndex] != "X" && mapArray[rowIndex + 2][cellIndex] != "B" && mapArray[rowIndex + 2][cellIndex] != "W" && keyName === "ArrowDown") {
                     moveDown();
-                    mapArray[i + 2][j] = "X";
-                    mapArray[i][j] = "O"
-                    redrawBoard();
-                    break outerloop;    
-                } 
-
-        
-
-                if (mapArray[i][j] === "S" && mapArray[i][j + 1] === "X" && mapArray[i][j + 2] != "W" && mapArray[i][j + 2] != "B" && keyName === "ArrowRight") {
-                    moveRight();
-                    // mapArray[i][j + 1] = "S";
-                    mapArray[i][j + 2] = "B"
-                    mapArray[i][j + 1] = "P"
-                    redrawBoard();
-                    break outerloop;
-                } if (mapArray[i][j] === "S" && mapArray[i][j - 1] === "X" && mapArray[i][j - 2] != "W" && mapArray[i][j - 2] != "B" && keyName === "ArrowLeft") {
-                    moveLeft();
-                    mapArray[i][j - 2] = "B";
-                    mapArray[i][j - 1] = "P"
-                    redrawBoard();
-                    break;
-                } if (mapArray[i][j] === "S" && mapArray[i - 1][j] === "X" && mapArray[i - 2][j] != "W" && mapArray[i - 2][j] != "B" && keyName === "ArrowUp") {
-                    moveUp();
-                    mapArray[i - 2][j] = "B";
-                    mapArray[i - 1][j] = "P"
-                    redrawBoard();
-                    break outerloop;
-                } if (mapArray[i][j] === "S" && mapArray[i + 1][j] === "X" && mapArray[i + 2][j] != "W" && mapArray[i + 2][j] != "B" && keyName === "ArrowDown") {
-                    moveDown();
-                    mapArray[i + 2][j] = "B";
-                    mapArray[i + 1][j] = "P"
-                    redrawBoard();
-                    break outerloop;    
-                } 
-                
-                // next 4 'if statements' move the player and adjacent box onto a storage space, and change the storage space into a boxDot div (box occupying a storage space)
-                
-                if (mapArray[i][j] === "S" && mapArray[i][j + 1] === "B" && mapArray[i][j + 2] === "O" && keyName === "ArrowRight") {
-                    moveRight();
-                    mapArray[i][j + 2] = "X"
-                    redrawBoard();
-                    break outerloop;
-                } if (mapArray[i][j] === "S" && mapArray[i][j - 1] === "B" && mapArray[i][j - 2] === "O" && keyName === "ArrowLeft") {
-                    moveLeft();
-                    mapArray[i][j - 2] = "X";
-                    redrawBoard();
-                    break outerloop;
-                } if (mapArray[i][j] === "S" && mapArray[i - 1][j] === "B" && mapArray[i - 2][j] === "O" && keyName === "ArrowUp") {
-                    moveUp();
-                    mapArray[i - 2][j] = "X";
-                    redrawBoard();
-                    break outerloop;
-                } if (mapArray[i][j] === "S" && mapArray[i + 1][j] === "B" && mapArray[i + 2][j] === "O" && keyName === "ArrowDown") {
-                    moveDown();
-                    mapArray[i + 2][j] = "X";
+                    mapArray[rowIndex + 2][cellIndex] = "X";
+                    currentCell("O");
                     redrawBoard();
                     break outerloop;
                 }
 
 
 
-                
-                
+                if (currentCell() === "S" && rightOne() === "X" && rightTwo() != "W" && rightTwo() != "B" && rightTwo() != "O" && keyName === "ArrowRight") {
+                    // moveRight();
+                    currentCell(" ");
+                    rightOne("P");
+                    rightTwo("B");
+                    redrawBoard();
+                    break outerloop;
+                }
+                if (currentCell() === "S" && mapArray[rowIndex][cellIndex - 1] === "X" && mapArray[rowIndex][cellIndex - 2] != "W" && mapArray[rowIndex][cellIndex - 2] != "B" && keyName === "ArrowLeft") {
+                    moveLeft();
+                    mapArray[rowIndex][cellIndex - 2] = "B";
+                    mapArray[rowIndex][cellIndex - 1] = "P"
+                    redrawBoard();
+                    break;
+                }
+                if (currentCell() === "S" && mapArray[rowIndex - 1][cellIndex] === "X" && mapArray[rowIndex - 2][cellIndex] != "W" && mapArray[rowIndex - 2][cellIndex] != "B" && keyName === "ArrowUp") {
+                    moveUp();
+                    mapArray[rowIndex - 2][cellIndex] = "B";
+                    mapArray[rowIndex - 1][cellIndex] = "P"
+                    redrawBoard();
+                    break outerloop;
+                }
+                if (currentCell() === "S" && mapArray[rowIndex + 1][cellIndex] === "X" && mapArray[rowIndex + 2][cellIndex] != "W" && mapArray[rowIndex + 2][cellIndex] != "B" && keyName === "ArrowDown") {
+                    moveDown();
+                    mapArray[rowIndex + 2][cellIndex] = "B";
+                    mapArray[rowIndex + 1][cellIndex] = "P"
+                    redrawBoard();
+                    break outerloop;
+                }
+
+                // next 4 'if statements' move the player and adjacent box onto a storage space, and change the storage space into a boxDot div (box occupying a storage space)
+
+                if (currentCell() === "S" && rightOne() === "B" && rightTwo() === "O" && keyName === "ArrowRight") {
+                    // moveRight();
+                    currentCell(" ");
+                    rightOne("S");
+                    rightTwo("X");
+                    redrawBoard();
+                    break outerloop;
+                }
+                if (currentCell() === "S" && mapArray[rowIndex][cellIndex - 1] === "B" && mapArray[rowIndex][cellIndex - 2] === "O" && keyName === "ArrowLeft") {
+                    moveLeft();
+                    mapArray[rowIndex][cellIndex - 2] = "X";
+                    redrawBoard();
+                    break outerloop;
+                }
+                if (currentCell() === "S" && mapArray[rowIndex - 1][cellIndex] === "B" && mapArray[rowIndex - 2][cellIndex] === "O" && keyName === "ArrowUp") {
+                    moveUp();
+                    mapArray[rowIndex - 2][cellIndex] = "X";
+                    redrawBoard();
+                    break outerloop;
+                }
+                if (currentCell() === "S" && mapArray[rowIndex + 1][cellIndex] === "B" && mapArray[rowIndex + 2][cellIndex] === "O" && keyName === "ArrowDown") {
+                    moveDown();
+                    mapArray[rowIndex + 2][cellIndex] = "X";
+                    redrawBoard();
+                    break outerloop;
+                }
+
+
+
+
+
             }
         }
-        checkWin();
+    checkWin();
 }
 
 document.addEventListener("keydown", onKeyEvent);
