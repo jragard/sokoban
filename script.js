@@ -18,32 +18,23 @@ let createDiv = (type) => {
     document.getElementById("container").appendChild(divEl);
 }
 
+let classNames = {
+    wall: "walls",
+    " ": "floors",
+    storage: "storages",
+    box: "boxes",
+    player: "start",
+    storageBox: "storageBoxes",
+    storagePlayer: "storagePlayers"
+};
+
+// use a look up table (forEach)
 let createBoard = () => {
-    for (let i = 0; i < mapArray.length; i++) {
-        for (let j = 0; j < mapArray[0].length; j++) {
-            if (mapArray[i][j] === "wall") {
-                createDiv("walls");
-            }
-            if (mapArray[i][j] === " ") {
-                createDiv("floors");
-            }
-            if (mapArray[i][j] === "storage") {
-                createDiv("storages");
-            }
-            if (mapArray[i][j] === "box") {
-                createDiv("boxes")
-            }
-            if (mapArray[i][j] === "player") {
-                createDiv("start");
-            }
-            if (mapArray[i][j] === "storageBox") {
-                createDiv("storageBoxes");
-            }
-            if (mapArray[i][j] === "storagePlayer") {
-                createDiv("storagePlayers")
-            }
-        }
-    }
+    mapArray.forEach(row => 
+        row.forEach(cell => 
+            createDiv(classNames[cell])
+        )
+    ); 
 }
 
 window.onload = function () {
@@ -70,196 +61,117 @@ let checkWin = () => {
     }
 }
 
-const onKeyEvent = (event) => {
+let getLocations = (key, rowIndex, cellIndex) => {
+    let dirs = {
+        one: {
+            row: rowIndex, 
+            cell: cellIndex
+        }, 
+        two: {
+            row: rowIndex,
+            cell: cellIndex
+        }
+    };
 
-    const keyName = event.key;
+    switch (key) {
+        case "ArrowRight":
+            dirs.one.cell++;
+            dirs.two.cell += 2;
+            break;
+        case "ArrowLeft":
+            dirs.one.cell--;
+            dirs.two.cell -= 2;
+            break;
+        case "ArrowUp":
+            dirs.one.row--;
+            dirs.two.row -= 2;
+            break;
+        case "ArrowDown":
+            dirs.one.row++;
+            dirs.two.row += 2;
+            break;
+    }
+    return dirs;
+}
+
+let movePlayer = (currentSpace, firstSpace, secondSpace, cell = "box") => {
+    mapArray[currentSpace.row][currentSpace.cell] = " ";
+    mapArray[firstSpace.row][firstSpace.cell] = "player";
+    if (secondSpace) {
+        mapArray[secondSpace.row][secondSpace.cell] = cell;
+    }
+    redrawBoard();
+}
+
+let playerToStorage = (currentSpace, firstSpace, secondSpace) => {
+    mapArray[currentSpace.row][currentSpace.cell] = " ";
+    mapArray[firstSpace.row][firstSpace.cell] = "storagePlayer";
+    if (secondSpace) {
+        mapArray[secondSpace.row][secondSpace.cell] = "box";
+    }
+    redrawBoard();
+}
+
+let playerFromStorage = (currentSpace, firstSpace, secondSpace, cell = "box") => {
+    mapArray[currentSpace.row][currentSpace.cell] = "storage";
+    mapArray[firstSpace.row][firstSpace.cell] = "player";
+    if (secondSpace) {
+        mapArray[secondSpace.row][secondSpace.cell] = cell;
+    }
+    redrawBoard();
+}
+
+const onKeyEvent = (event) => {
 
     outerloop:
         for (let rowIndex = 0; rowIndex < mapArray.length; rowIndex++) {
             innerloop: for (let cellIndex = 0; cellIndex < mapArray[rowIndex].length; cellIndex++) {
-
-                let currentCell = (newValue) => {
-                    if (newValue) mapArray[rowIndex][cellIndex] = newValue;
-                    return mapArray[rowIndex][cellIndex];
-                };
-
-                let rightOne = (newValue) => {
-                    if (newValue) mapArray[rowIndex][cellIndex + 1] = newValue;
-                    return mapArray[rowIndex][cellIndex + 1];
+       
+                const {one, two} = getLocations(event.key, rowIndex, cellIndex);
+                const current = mapArray[rowIndex][cellIndex];                
+                const currentSpace = {
+                    row: rowIndex,
+                    cell: cellIndex
                 }
-
-                let rightTwo = (newValue) => {
-                    if (newValue) mapArray[rowIndex][cellIndex + 2] = newValue;
-                    return mapArray[rowIndex][cellIndex + 2];
+                if (current === "player" && mapArray[one.row][one.cell] === "box" && mapArray[two.row][two.cell] === " ") {
+                    movePlayer(currentSpace, one, two);
+                    break outerloop;
                 }
-
-                let leftOne = (newValue) => {
-                    if (newValue) mapArray[rowIndex][cellIndex - 1] = newValue;
-                    return mapArray[rowIndex][cellIndex - 1];
+                
+                if (current === "player" && mapArray[one.row][one.cell] === "box" && mapArray[two.row][two.cell] === "storage") {
+                    movePlayer(currentSpace, one, two, "storageBox");
+                    break outerloop;                
                 }
 
-                let leftTwo = (newValue) => {
-                    if (newValue) mapArray[rowIndex][cellIndex - 2] = newValue;
-                    return mapArray[rowIndex][cellIndex - 2];
+                if (current === "player" && mapArray[one.row][one.cell] === " ") {
+                    movePlayer(currentSpace, one);
+                    break outerloop;
                 }
 
-                let upOne = (newValue) => {
-                    if (newValue) mapArray[rowIndex - 1][cellIndex] = newValue;
-                    return mapArray[rowIndex - 1][cellIndex];
+                if (current === "player" && mapArray[one.row][one.cell] === "storage") {
+                    playerToStorage(currentSpace, one);
+                    break outerloop;
                 }
 
-                let upTwo = (newValue) => {
-                    if (newValue) mapArray[rowIndex - 2][cellIndex] = newValue;
-                    return mapArray[rowIndex - 2][cellIndex];
+                if (current === "player" && mapArray[one.row][one.cell] === "storageBox" && mapArray[two.row][two.cell] === " ") {
+                    playerToStorage(currentSpace, one, two);
+                    break outerloop;
                 }
 
-                let downOne = (newValue) => {
-                    if (newValue) mapArray[rowIndex + 1][cellIndex] = newValue;
-                    return mapArray[rowIndex + 1][cellIndex];
+                if (current === "storagePlayer" && mapArray[one.row][one.cell] === " ") {
+                    playerFromStorage(currentSpace, one);
+                    break outerloop;
                 }
 
-                let downTwo = (newValue) => {
-                    if (newValue) mapArray[rowIndex + 2][cellIndex] = newValue;
-                    return mapArray[rowIndex + 2][cellIndex];
+                if (current === "storagePlayer" && mapArray[one.row][one.cell] === "box" && mapArray[two.row][two.cell] === " ") {
+                    playerFromStorage(currentSpace, one, two);
+                    break outerloop;
                 }
 
-                let movePlayer = (direction, boxDirection = false, storageBoxDirection = false) => {
-                    currentCell(" ");
-                    direction("player");
-                    if (boxDirection) boxDirection("box");
-                    if (storageBoxDirection) storageBoxDirection("storageBox");
-                    redrawBoard();
-                }
-
-                let playerToStorage = (direction, boxDirection = false) => {
-                    currentCell(" ");
-                    direction("storagePlayer");
-                    if (boxDirection) boxDirection("box");
-                    redrawBoard();
-                }
-
-                let playerFromStorage = (direction, boxDirection = false, storageBoxDirection = false) => {
-                    currentCell("storage");
-                    direction("player");
-                    if (boxDirection) boxDirection("box");
-                    if (storageBoxDirection) storageBoxDirection("storageBox")
-                    redrawBoard();
-                }
-
-    
-                if (currentCell() === "player" && rightOne() === "box" && rightTwo() === " " && keyName === "ArrowRight") {
-                    movePlayer(rightOne, rightTwo);
+                if (current === "storagePlayer" && mapArray[one.row][one.cell] === "box" && mapArray[two.row][two.cell] === "storage") {
+                    playerFromStorage(currentSpace, one, two, "storageBox");
                     break outerloop;
-                }
-                if (currentCell() === "player" && leftOne() === "box" && leftTwo() === " " && keyName === "ArrowLeft") {
-                    movePlayer(leftOne, leftTwo);
-                }
-                if (currentCell() === "player" && upOne() === "box" && upTwo() === " " && keyName === "ArrowUp") {
-                    movePlayer(upOne, upTwo);
-                }
-                if (currentCell() === "player" && downOne() === "box" && downTwo() === " " && keyName === "ArrowDown") {
-                    movePlayer(downOne, downTwo);
-                    break outerloop;
-                }
-                if (currentCell() === "player" && rightOne() === " " && keyName === "ArrowRight") {
-                    movePlayer(rightOne);
-                    break outerloop;
-                }
-                if (currentCell() === "player" && leftOne() === " " && keyName === "ArrowLeft") {
-                    movePlayer(leftOne);
-                }
-                if (currentCell() === "player" && upOne() === " " && keyName === "ArrowUp") {
-                    movePlayer(upOne);
-                }
-                if (currentCell() === "player" && downOne() === " " && keyName === "ArrowDown") {
-                    movePlayer(downOne);
-                    break outerloop;
-                }
-                if (currentCell() === "player" && rightOne() === "storage" && keyName === "ArrowRight") {
-                    playerToStorage(rightOne);
-                    break outerloop;
-                }
-                if (currentCell() === "player" && leftOne() === "storage" && keyName === "ArrowLeft") {
-                    playerToStorage(leftOne);
-                }
-                if (currentCell() === "player" && upOne() === "storage" && keyName === "ArrowUp") {
-                    playerToStorage(upOne);
-                }
-                if (currentCell() === "player" && downOne() === "storage" && keyName === "ArrowDown") {
-                    playerToStorage(downOne);
-                    break outerloop;
-                }
-                if (currentCell() === "player" && rightOne() === "storageBox" && rightTwo() === " " && keyName === "ArrowRight") {
-                    playerToStorage(rightOne, rightTwo);
-                    break outerloop;
-                }
-                if (currentCell() === "player" && leftOne() === "storageBox" && leftTwo() === " " && keyName === "ArrowLeft") {
-                    playerToStorage(leftOne, leftTwo);
-                }
-                if (currentCell() === "player" && upOne() === "storageBox" && upTwo() === " " && keyName === "ArrowUp") {
-                    playerToStorage(upOne, upTwo);
-                }
-                if (currentCell() === "player" && downOne() === "storageBox" && downTwo() === " " && keyName === "ArrowDown") {
-                    playerToStorage(downOne, downTwo);
-                    break outerloop;
-                }
-                if (currentCell() === "player" && rightOne() === "box" && rightTwo() === "storage" && keyName === "ArrowRight") {
-                    movePlayer(rightOne, false, rightTwo);
-                    break outerloop;
-                }
-                if (currentCell() === "player" && leftOne() === "box" && leftTwo() === "storage" && keyName === "ArrowLeft") {
-                    movePlayer(leftOne, false, leftTwo);
-                }
-                if (currentCell() === "player" && upOne() === "box" && upTwo() === "storage" && keyName === "ArrowUp") {
-                    movePlayer(upOne, false, upTwo);
-                }
-                if (currentCell() === "player" && downOne() === "box" && downTwo() === "storage" && keyName === "ArrowDown") {
-                    movePlayer(downOne, false, downTwo);
-                    break outerloop;
-                }
-                if (currentCell() === "storagePlayer" && rightOne() === " " && keyName === "ArrowRight") {
-                    playerFromStorage(rightOne);
-                    break outerloop;
-                }
-                if (currentCell() === "storagePlayer" && leftOne() === " " && keyName === "ArrowLeft") {
-                    playerFromStorage(leftOne);
-                }
-                if (currentCell() === "storagePlayer" && upOne() === " " && keyName === "ArrowUp") {
-                    playerFromStorage(upOne);
-                }
-                if (currentCell() === "storagePlayer" && downOne() === " " && keyName === "ArrowDown") {
-                    playerFromStorage(downOne);
-                    break outerloop;
-                }
-                if (currentCell() === "storagePlayer" && rightOne() === "box" && rightTwo() === " " && keyName === "ArrowRight") {
-                    playerFromStorage(rightOne, rightTwo, false);
-                    break outerloop;
-                }
-                if (currentCell() === "storagePlayer" && leftOne() === "box" && leftTwo() === " " && keyName === "ArrowLeft") {
-                    playerFromStorage(leftOne, leftTwo, false);
-                }
-                if (currentCell() === "storagePlayer" && upOne() === "box" && upTwo() === " " && keyName === "ArrowUp") {
-                    playerFromStorage(upOne, upTwo, false);
-
-                }
-                if (currentCell() === "storagePlayer" && downOne() === "box" && downTwo() === " " && keyName === "ArrowDown") {
-                    playerFromStorage(downOne, downTwo, false);
-                    break outerloop;
-                }
-                if (currentCell() === "storagePlayer" && rightOne() === "box" && rightTwo() === "storage" && keyName === "ArrowRight") {
-                    playerFromStorage(rightOne, false, rightTwo);
-                    break outerloop;
-                }
-                if (currentCell() === "storagePlayer" && leftOne() === "box" && leftTwo() === "storage" && keyName === "ArrowLeft") {
-                    playerFromStorage(leftOne, false, leftTwo);
-                }
-                if (currentCell() === "storagePlayer" && upOne() === "box" && upTwo() === "storage" && keyName === "ArrowUp") {
-                    playerFromStorage(upOne, false, upTwo);
-                }
-                if (currentCell() === "storagePlayer" && downOne() === "box" && downTwo() === "storage" && keyName === "ArrowDown") {
-                    playerFromStorage(downOne, false, downTwo);
-                    break outerloop;
-                }
+                } 
             }
         }
     checkWin();
