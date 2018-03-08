@@ -1,34 +1,16 @@
-// const map = [
-//     "  WWWWW ",
-//     "WWW   W ",
-//     "WOSB  W ",
-//     "WWW BOW ",
-//     "WOWWB W ",
-//     "W W O WW",
-//     "WB XBBOW",
-//     "W   O  W",
-//     "WWWWWWWW"
-// ];
-
 const mapArray = [
-[" ", " ", "wall", "wall", "wall", "wall", "wall", " "],
-["wall", "wall", "wall", " ", " ", " ", "wall", " "],
-["wall", "storage", "player", "box", " ", " ", "wall", " "],
-["wall", "wall", "wall", " ", "box", "storage", "wall", " "],
-["wall", "storage", "wall", "wall", "box", " ", "wall", " "],
-["wall", " ", "wall", " ", "storage", " ", "wall", "wall"],
-["wall", "box", " ", "storageBox", "box", "box", "storage", "wall"],
-["wall", " ", " ", " ", "storage", " ", " ", "wall"],
-["wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall"]
+    [" ", " ", "wall", "wall", "wall", "wall", "wall", " "],
+    ["wall", "wall", "wall", " ", " ", " ", "wall", " "],
+    ["wall", "storage", "player", "box", " ", " ", "wall", " "],
+    ["wall", "wall", "wall", " ", "box", "storage", "wall", " "],
+    ["wall", "storage", "wall", "wall", "box", " ", "wall", " "],
+    ["wall", " ", "wall", " ", "storage", " ", "wall", "wall"],
+    ["wall", "box", " ", "storageBox", "box", "box", "storage", "wall"],
+    ["wall", " ", " ", " ", "storage", " ", " ", "wall"],
+    ["wall", "wall", "wall", "wall", "wall", "wall", "wall", "wall"]
 ];
 
-// const mapArray = [];
 let isGameOver = false;
-
-// for (let i = 0; i < map.length; i++) {
-//     mapArray.push([]);
-//     mapArray[i].push(...map[i].split(""));
-// }
 
 let createDiv = (type) => {
     divEl = document.createElement("div");
@@ -36,7 +18,7 @@ let createDiv = (type) => {
     document.getElementById("container").appendChild(divEl);
 }
 
-let createMaze = () => {
+let createBoard = () => {
     for (let i = 0; i < mapArray.length; i++) {
         for (let j = 0; j < mapArray[0].length; j++) {
             if (mapArray[i][j] === "wall") {
@@ -65,13 +47,13 @@ let createMaze = () => {
 }
 
 window.onload = function () {
-    createMaze();
+    createBoard();
 }
 
 let redrawBoard = () => {
     let board = document.getElementById("container");
     board.innerHTML = "";
-    createMaze();
+    createBoard();
 }
 
 let checkWin = () => {
@@ -145,25 +127,31 @@ const onKeyEvent = (event) => {
 
                 // The following 12 functions are used to move the player (and boxes, if the player is next to a box) from floor spaces, storage spaces, and 'player storage spaces' (or previously empty storage spaces that the player now occupies)
 
-                let moveRightOne = () => {
+                let movePlayer = (direction) => {
                     currentCell(" ");
-                    rightOne("player");
+                    direction("player");
                 }
 
-                let moveLeftOne = () => {
-                    currentCell(" ");
-                    leftOne("player");
-                }
 
-                let moveUpOne = () => {
-                    currentCell(" ");
-                    upOne("player");
-                }
+                // let moveRightOne = () => {
+                //     currentCell(" ");
+                //     rightOne("player");
+                // }
 
-                let moveDownOne = () => {
-                    currentCell(" ");
-                    downOne("player");
-                }
+                // let moveLeftOne = () => {
+                //     currentCell(" ");
+                //     leftOne("player");
+                // }
+
+                // let moveUpOne = () => {
+                //     currentCell(" ");
+                //     upOne("player");
+                // }
+
+                // let moveDownOne = () => {
+                //     currentCell(" ");
+                //     downOne("player");
+                // }
 
                 let rightOneToP = () => {
                     currentCell(" ");
@@ -205,41 +193,45 @@ const onKeyEvent = (event) => {
                     downOne("player");
                 }
 
-                // if (currentCell() === "S" && rightOne() != "W" && rightOne() != "O" && rightOne() !=  && keyName === "ArrowRight") {
-                //     moveRightOne();
-                //     if (rightOne() === "B" && rightTwo() === " ") {
-                //         rightTwo() = "B";
-                //     } if (rightOne() === "B" && rightTwo() === "O") {
-                //         rightTwo() = "X"
+                // if (currentCell() === "player" && rightOne() != "wall" && rightOne() != "storage" && rightOne() != "storageBox" && keyName === "ArrowRight") {
+                    
+                //         moveRightOne();
+                //         rightTwo("box");
+                //         redrawBoard();
+                    
+                //     if (rightOne() === "box" && rightTwo() === "O") {
+                //         moveRightOne();
+                //         rightTwo("storageBox");
+                //         redrawBoard();
                 //     }
                 // }
 
                 // First 4 'if statements' move the player right/left/up/down on the condition that there is a box to move in the next cell, and that there is no storage space 2 cells over
 
                 if (currentCell() === "player" && rightOne() === "box" && rightTwo() === " " && keyName === "ArrowRight") {
-                    moveRightOne();
-
+                    // moveRightOne();
+                    movePlayer(rightOne);
                     rightTwo("box");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "player" && leftOne() === "box" && leftTwo() === " " && keyName === "ArrowLeft") {
-                    moveLeftOne();
-
+                    // moveLeftOne();
+                    movePlayer(leftOne);
                     leftTwo("box");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "player" && upOne() === "box" && upTwo() === " " && keyName === "ArrowUp") {
-                    moveUpOne();
-
+                    // moveUpOne();
+                    movePlayer(upOne);
                     upTwo("box");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "player" && downOne() === "box" && downTwo() === " " && keyName === "ArrowDown") {
-                    moveDownOne();
-
+                    // moveDownOne();
+                    movePlayer(downOne);
                     downTwo("box");
                     redrawBoard();
                     break outerloop;
@@ -248,26 +240,26 @@ const onKeyEvent = (event) => {
                 // next 4 'if statements' move the player right/left/up/down on the condition there is an empty space for them to move to
 
                 if (currentCell() === "player" && rightOne() === " " && keyName === "ArrowRight") {
-                    moveRightOne();
-                
+                    // moveRightOne();
+                    movePlayer(rightOne);
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "player" && leftOne() === " " && keyName === "ArrowLeft") {
-                    moveLeftOne();
-
+                    // moveLeftOne();
+                    movePlayer(leftOne);
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "player" && upOne() === " " && keyName === "ArrowUp") {
-                    moveUpOne();
-
+                    // moveUpOne();
+                    movePlayer(upOne);
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "player" && downOne() === " " && keyName === "ArrowDown") {
-                    moveDownOne();
-
+                    // moveDownOne();
+                    movePlayer(downOne);
                     redrawBoard();
                     break outerloop;
                 }
@@ -331,29 +323,29 @@ const onKeyEvent = (event) => {
                 // next 4 'if statements' move the player and adjacent box onto a storage space, and change the storage space into a boxDot div (box occupying a storage space)
 
                 if (currentCell() === "player" && rightOne() === "box" && rightTwo() === "storage" && keyName === "ArrowRight") {
-                    moveRightOne();
-
+                    // moveRightOne();
+                    movePlayer(rightOne);
                     rightTwo("storageBox");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "player" && leftOne() === "box" && leftTwo() === "storage" && keyName === "ArrowLeft") {
-                    moveLeftOne();
-
+                    // moveLeftOne();
+                    movePlayer(leftOne);
                     leftTwo("storageBox");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "player" && upOne() === "box" && upTwo() === "storage" && keyName === "ArrowUp") {
-                    moveUpOne();
-
+                    // moveUpOne();
+                    movePlayer(upOne);
                     upTwo("storageBox");
                     redrawBoard();
                     break outerloop;
                 }
                 if (currentCell() === "player" && downOne() === "box" && downTwo() === "storage" && keyName === "ArrowDown") {
-                    moveDownOne();
-
+                    // moveDownOne();
+                    movePlayer(downOne);
                     downTwo("storageBox");
                     redrawBoard();
                     break outerloop;
@@ -447,10 +439,6 @@ const onKeyEvent = (event) => {
                     redrawBoard();
                     break outerloop;
                 }
-
-
-
-               
             }
         }
     checkWin();
